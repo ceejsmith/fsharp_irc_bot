@@ -11,8 +11,6 @@ type Command =
     | Pong of string
     | Quit of string
 
-let newline = "\r\n"
-
 let build command = 
     let text =
         match command with
