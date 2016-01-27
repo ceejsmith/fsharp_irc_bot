@@ -13,12 +13,15 @@ type Command =
 
 let newline = "\r\n"
 
-let build = function
-    | Nick(name) -> "NICK " + name + newline
-    | User(nickname, fullname) -> "USER " + nickname + " 8 * : " + fullname + newline
-    | Join(channel) -> "JOIN " + channel + newline
-    | Pong(servername) -> "PONG " + servername + newline
-    | Quit(reason) -> "QUIT " + reason + newline
+let build command = 
+    let text =
+        match command with
+            | Nick(name) -> "NICK " + name
+            | User(nickname, fullname) -> "USER " + nickname + " 8 * : " + fullname
+            | Join(channel) -> "JOIN " + channel
+            | Pong(servername) -> "PONG " + servername
+            | Quit(reason) -> "QUIT " + reason
+    text + "\r\n"
 
 let send command (stream: NetworkStream) =
     let text = build command
