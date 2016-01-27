@@ -14,10 +14,11 @@ let parse (reply: string) =
     else if reply.StartsWith("ERROR")   then Error(reply.Substring(6))
     else if reply.StartsWith(":")       then Message(reply.Substring(1))
     else                                     Unknown
-
+    
 let BUFFERSIZE = 8192
 let buffer = Array.zeroCreate<byte> BUFFERSIZE
 
 let receive (stream: NetworkStream) =
     let byteCount = stream.Read(buffer, 0, BUFFERSIZE)
-    Encoding.ASCII.GetString(buffer, 0, byteCount)
+    let text = Encoding.ASCII.GetString(buffer, 0, byteCount)
+    (text, parse text)
